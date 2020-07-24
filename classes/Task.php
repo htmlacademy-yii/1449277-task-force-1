@@ -1,4 +1,5 @@
 <?php
+
 namespace classes;
 
 class Task
@@ -21,19 +22,19 @@ class Task
 
     // список возможных действий с задачами
     public $actions = [
-        'answer' => 'Откликнуться',
-        'cancel' => 'Отменить',
-        'done' => 'Выполнено',
-        'refuse' => 'Отказаться',
+        self::ACTION_ANSWER => 'Откликнуться',
+        self::ACTION_CANCEL => 'Отменить',
+        self::ACTION_DONE => 'Выполнено',
+        self::ACTION_REFUSE => 'Отказаться',
     ];
 
     // список статусов задачи
     public $statuses = [
-        'new' => 'Новое',
-        'cancelled' => 'Отмененное',
-        'work' => 'В работе',
-        'done' => 'Выполнено',
-        'failed' => 'Провалено',
+        self::STATUS_NEW => 'Новое',
+        self::STATUS_CANCELLED => 'Отмененное',
+        self::STATUS_WORK => 'В работе',
+        self::STATUS_DONE => 'Выполнено',
+        self::STATUS_FAILED => 'Провалено',
     ];
 
 
@@ -55,23 +56,28 @@ class Task
     }
 
 
-    // Метод возвращающий карту статусов и действий
-    public function getMap($param){
+    /**
+     * Возвращает доступные статусы задач
+     */
 
-        if ($param == 'status') {
-            return $this->statuses;
-        }elseif ($param == 'action') {
-            return $this->actions;
-        }else {
-            return 'Запрос не обработан(';
-        };
+    public function getStatuses(){
+        return $this->statuses;
+    }
 
+    /**
+     * Возвращает список доступных действий с задачами
+     */
+    public  function getActions(){
+        return $this->actions;
     }
 
 
 
 
-    // Метод возвращающий следующий статус задачи, принимает текущий статус и действие пользователя
+    /**
+     * Метод, который вернет следующий статус задачи,
+     * если передать текущий статус и действие.
+     */
     public function nextStatus($status, $action){
 
         if ($status == self::STATUS_NEW){
@@ -89,17 +95,38 @@ class Task
                 return self::STATUS_FAILED;
             }
         }
-        
+
     }
+
+
+    /**
+     * Метод, который вернет все доступные действия
+     * для переданного пользователя на текущем статусе задачи.
+     */
+    public function userActions($type_of_user, $status) {
+        if ($type_of_user == 'customer'){
+            if ($status == self::STATUS_NEW) {
+                return "Доступное действия ". self::ACTION_CANCEL;
+            }elseif ($status == self::STATUS_WORK){
+                return "Доступное действия ". self::STATUS_DONE;
+            }else{
+                return "Не определено доступное действие для заказчика!";
+            }
+        }elseif ($type_of_user == 'executor'){
+            if ($status == self::STATUS_NEW) {
+                return "Доступное действия ". self::ACTION_ANSWER;
+            }elseif ($status == self::STATUS_WORK){
+                return "Доступное действия ". self::ACTION_REFUSE;
+            }else{
+                return "Не определено доступное действие для исполнителя!";
+            }
+        }else{
+            return "Роль не определена!";
+        }
+    }
+
 
     
 
 }
 
-//объявляем класс
-$new = new Task(1,1,1);
-
-// попытка вызвать метод
-print_r($new->getMap('action'));
-echo '</br></br>';
-print_r($new->nextStatus('work','refuse'));
