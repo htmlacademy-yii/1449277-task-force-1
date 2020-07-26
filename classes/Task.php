@@ -78,23 +78,16 @@ class Task
      * Метод, который вернет следующий статус задачи,
      * если передать текущий статус и действие.
      */
-    public function nextStatus($status, $action){
+    public function nextStatus($action){
 
-        if ($status == self::STATUS_NEW){
-            if ($action == self::ACTION_ANSWER){
-                return self::STATUS_WORK;
-            }elseif ($action == self::ACTION_CANCEL){
-                return self::STATUS_CANCELLED;
-            }
-        }
+        $nextStatus = [
+            self::ACTION_ANSWER => self::STATUS_WORK,
+            self::ACTION_CANCEL => self::STATUS_CANCELLED,
+            self::ACTION_DONE => self::STATUS_DONE,
+            self::ACTION_REFUSE => self::STATUS_FAILED
+        ];
 
-        if ($status == self::STATUS_WORK) {
-            if ($action == self::ACTION_DONE){
-                return self::STATUS_DONE;
-            }elseif ($action == self::ACTION_REFUSE){
-                return self::STATUS_FAILED;
-            }
-        }
+        return $nextStatus[$action];
 
     }
 
@@ -103,25 +96,23 @@ class Task
      * Метод, который вернет все доступные действия
      * для переданного пользователя на текущем статусе задачи.
      */
-    public function userActions($type_of_user, $status) {
-        if ($type_of_user == 'customer'){
-            if ($status == self::STATUS_NEW) {
-                return "Доступное действия ". self::ACTION_CANCEL;
-            }elseif ($status == self::STATUS_WORK){
-                return "Доступное действия ". self::STATUS_DONE;
-            }else{
-                return "Не определено доступное действие для заказчика!";
-            }
-        }elseif ($type_of_user == 'executor'){
-            if ($status == self::STATUS_NEW) {
-                return "Доступное действия ". self::ACTION_ANSWER;
-            }elseif ($status == self::STATUS_WORK){
-                return "Доступное действия ". self::ACTION_REFUSE;
-            }else{
-                return "Не определено доступное действие для исполнителя!";
-            }
+    public function userActions($user_id) {
+        $for_customer = [
+            self::STATUS_NEW => self::ACTION_CANCEL,
+            self::STATUS_WORK => self::STATUS_DONE
+        ];
+
+        $for_executor = [
+            self::STATUS_NEW => self::ACTION_ANSWER,
+            self::STATUS_WORK => self::ACTION_REFUSE
+        ];
+
+        if ($user_id == $this->customer_id){
+            return $for_customer[$this->state];
+        }elseif ($user_id == $this->executor_id){
+            return $for_executor[$this->state];
         }else{
-            return "Роль не определена!";
+            return null;
         }
     }
 
@@ -129,4 +120,6 @@ class Task
     
 
 }
+
+
 
