@@ -87,7 +87,11 @@ class Task
             self::ACTION_REFUSE => self::STATUS_FAILED
         ];
 
-        return $nextStatus[$action];
+        if (isset($nextStatus[$action])) {
+            return $nextStatus[$action];
+        }else{
+            return null;
+        }
 
     }
 
@@ -111,9 +115,9 @@ class Task
             return $for_customer[$this->state];
         }elseif ($user_id == $this->executor_id){
             return $for_executor[$this->state];
-        }else{
-            return null;
         }
+            return null;
+
     }
 
 

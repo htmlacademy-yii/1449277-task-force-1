@@ -1,7 +1,17 @@
 <?php
 
 use classes\Task;
-spl_autoload_extensions('Task.php');
+
+/*
+ * подключаем созданный класс для проверки
+ */
+
+function my_autoloader($class) {
+    include 'classes/Task.php';
+}
+
+spl_autoload_register('my_autoloader');
+
 
 
 $new = new Task(1,2,'new');
