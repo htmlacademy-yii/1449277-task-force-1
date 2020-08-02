@@ -6,11 +6,11 @@ use classes\Task;
  * подключаем созданный класс для проверки
  */
 
-function my_autoloader($class) {
+/*function my_autoloader($class) {
     include 'classes/Task.php';
-}
+}*/
 
-spl_autoload_register('my_autoloader');
+spl_autoload_register();
 
 
 
