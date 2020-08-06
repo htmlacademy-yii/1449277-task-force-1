@@ -1,0 +1,13 @@
+{
+    "name": "vendor/site",
+    "description": "My website on yii2 framework",
+    "type": "project",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "1449277-task-force-1\\": "src/business"
+        }
+    }
+
+}

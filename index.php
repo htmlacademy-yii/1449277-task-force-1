@@ -1,17 +1,12 @@
 <?php
 
-use classes\Task;
+use src\business\Task;
 
 /*
- * подключаем созданный класс для проверки
+ * подключаем vendor/autoload.php
  */
 
-/*function my_autoloader($class) {
-    include 'classes/Task.php';
-}*/
-
-spl_autoload_register();
-
+require_once __DIR__ . '/vendor/autoload.php';
 
 
 $new = new Task(1,2,'new');
