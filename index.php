@@ -1,6 +1,6 @@
 <?php
 
-use src\business\Task;
+use disa\business\Task;
 
 /*
  * подключаем vendor/autoload.php

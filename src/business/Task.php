@@ -1,6 +1,6 @@
 <?php
 
-namespace src\business;
+namespace disa\business;
 
 class Task
 {
